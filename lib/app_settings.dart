@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:orca_ai/app_module.dart';
+import 'package:orca_ai/core/configs/api_config.dart';
+import 'package:orca_ai/core/constants/routes.dart';
+import 'package:orca_ai/core/utils/remote_config.dart';
+
+class AppSettings {
+  static Future<void> init() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    initializeDateFormatting('pt_BR');
+
+    Modular.init(AppModule());
+
+    await Modular.get<RemoteConfig>().init();
+    await Modular.get<ApiConfig>().init();
+
+    Modular.setInitialRoute(Routes.dashboardPage);
+  }
+}
