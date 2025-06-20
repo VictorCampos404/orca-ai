@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/core/clients/app_client.dart';
 import 'package:orca_ai/core/configs/api_config.dart';
+import 'package:orca_ai/core/interceptors/interceptors.dart';
 
 class GeminiClient extends AppClient {
   GeminiClient() {
@@ -12,6 +13,8 @@ class GeminiClient extends AppClient {
       contentType: 'application/json',
     );
     super.client = Dio(baseOptions);
-    super.client.interceptors.addAll([]);
+    super.client.interceptors.addAll([
+      GeminiKeyInterceptor(key: Modular.get<ApiConfig>().geminiKey),
+    ]);
   }
 }
