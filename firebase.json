@@ -1,0 +1,14 @@
+{
+    "flutter": {
+        "platforms": {
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "orcaai-hml",
+                    "configurations": {
+                        "web": "1:1092340184316:web:0a13cb61aafb4011d41379"
+                    }
+                }
+            }
+        }
+    }
+}
