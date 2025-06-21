@@ -9,6 +9,8 @@ class AppColors {
   static const Color pdf = Color(0xFFC01E2D);
   static const Color microphone = Color(0xFFC01E2D);
   static const Color success = Color(0xFF0C7C59);
+  static const Color error = Color(0xFFC01E2D);
+  static const Color warning = Color(0xFFFFBA08);
   static const Color background = Color(0xFFFCFAF4);
   static const Color backgroundSmoke = Color(0xFFF4F4F4);
   static const Color purple = Color(0xFF6D00AD);
@@ -19,20 +21,12 @@ class AppColors {
   static const LinearGradient gemini = LinearGradient(
     begin: AlignmentDirectional.topStart,
     end: AlignmentDirectional.bottomEnd,
-    colors: [
-      purple,
-      blue,
-    ],
+    colors: [purple, blue],
   );
   static LinearGradient geminiTranslucent = LinearGradient(
     begin: AlignmentDirectional.topStart,
     end: AlignmentDirectional.bottomEnd,
-    colors: [
-      purple.withOpacity(0.5),
-      blue.withOpacity(0.5),
-    ],
+    colors: [purple.withOpacity(0.5), blue.withOpacity(0.5)],
   );
-  static ColorScheme colorScheme = ColorScheme.fromSeed(
-    seedColor: primary,
-  );
+  static ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: primary);
 }

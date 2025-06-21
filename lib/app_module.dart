@@ -2,7 +2,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/core/clients/gemini_client.dart';
 import 'package:orca_ai/core/configs/api_config.dart';
 import 'package:orca_ai/core/constants/routes.dart';
-import 'package:orca_ai/core/utils/remote_config.dart';
+import 'package:orca_ai/presentation/controller/user_session_controller.dart';
+import 'package:orca_ai/presentation/pages/login_page.dart';
+import 'package:orca_ai/services/firebase_auth_service.dart';
+import 'package:orca_ai/services/remote_config_service.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/domain/domain.dart';
 import 'package:orca_ai/presentation/controller/system_controller.dart';
@@ -22,13 +25,15 @@ class AppModule extends Module {
 
     //Controllers
     i.addLazySingleton(SystemController.new);
+    i.addLazySingleton(UserSessionController.new);
 
     //Clients Https
     i.addLazySingleton(GeminiClient.new);
 
     //Services
-    i.addLazySingleton(RemoteConfig.new);
+    i.addLazySingleton(RemoteConfigService.new);
     i.addLazySingleton(ApiConfig.new);
+    i.addLazySingleton(FirebaseAuthService.new);
 
     super.binds(i);
   }
@@ -36,6 +41,7 @@ class AppModule extends Module {
   @override
   void routes(RouteManager r) {
     r.child(Routes.dashboardPage, child: (ctx) => const DashboardPage());
+    r.child(Routes.loginPage, child: (ctx) => const LoginPage());
     // r.child(Routes.homePage, child: (ctx) => const HomePage());
     // r.child(
     //   Routes.createPage,

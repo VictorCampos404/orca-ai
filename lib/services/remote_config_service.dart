@@ -1,6 +1,6 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
-class RemoteConfig {
+class RemoteConfigService {
   FirebaseRemoteConfig config = FirebaseRemoteConfig.instance;
 
   Future<void> init() async {

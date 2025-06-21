@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:orca_ai/core/utils/remote_config.dart';
+import 'package:orca_ai/services/remote_config_service.dart';
 
 class ApiConfig {
-  final RemoteConfig _remoteConfig;
+  final RemoteConfigService _remoteConfig;
   Map<String, dynamic> _json = {'': ''};
 
   ApiConfig(this._remoteConfig);

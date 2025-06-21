@@ -1,4 +1,5 @@
 class Routes {
+  static const String loginPage = '/login-page';
   static const String homePage = '/home-page';
   static const String createPage = '/create-page';
   static const String previewPage = '/preview-page';

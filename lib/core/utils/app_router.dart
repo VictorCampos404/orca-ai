@@ -43,4 +43,12 @@ class AppRouter {
   static goToListenPage() async {
     return Modular.to.pushNamed(Routes.listenPage);
   }
+
+  static goToLoginPage() async {
+    return Modular.to.pushNamed(Routes.loginPage);
+  }
+
+  static goToDashboardPage() async {
+    return Modular.to.pushNamed(Routes.dashboardPage);
+  }
 }

@@ -5,7 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:orca_ai/app_module.dart';
 import 'package:orca_ai/core/configs/api_config.dart';
 import 'package:orca_ai/core/constants/routes.dart';
-import 'package:orca_ai/core/utils/remote_config.dart';
+import 'package:orca_ai/services/remote_config_service.dart';
 import 'package:orca_ai/firebase_options.dart';
 
 class AppSettings {
@@ -20,7 +20,7 @@ class AppSettings {
 
     Modular.init(AppModule());
 
-    await Modular.get<RemoteConfig>().init();
+    await Modular.get<RemoteConfigService>().init();
     await Modular.get<ApiConfig>().init();
 
     Modular.setInitialRoute(Routes.dashboardPage);

@@ -10,11 +10,11 @@ class DeviceBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth <= 450) {
+        if (constraints.maxWidth <= Device.phone.maxWidth) {
           return builder(context, Device.phone);
         }
 
-        if (constraints.maxWidth <= 780) {
+        if (constraints.maxWidth <= Device.tablet.maxWidth) {
           return builder(context, Device.tablet);
         }
 
