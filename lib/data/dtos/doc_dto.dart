@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class DocData {
+class DocDto {
   String? path;
   String? name;
   String? title;
@@ -9,7 +9,7 @@ class DocData {
   String? value;
   DateTime? createdAt;
 
-  DocData({
+  DocDto({
     this.path,
     this.name,
     this.title,
@@ -31,8 +31,8 @@ class DocData {
     };
   }
 
-  factory DocData.fromMap(Map<String, dynamic> map) {
-    return DocData(
+  factory DocDto.fromMap(Map<String, dynamic> map) {
+    return DocDto(
       path: map['path'],
       name: map['name'],
       title: map['title'],

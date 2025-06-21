@@ -3,17 +3,25 @@ import 'package:orca_ai/core/clients/gemini_client.dart';
 import 'package:orca_ai/core/configs/api_config.dart';
 import 'package:orca_ai/core/constants/routes.dart';
 import 'package:orca_ai/core/utils/remote_config.dart';
+import 'package:orca_ai/data/data.dart';
+import 'package:orca_ai/domain/domain.dart';
 import 'package:orca_ai/presentation/controller/system_controller.dart';
 import 'package:orca_ai/presentation/pages/dashboard_page.dart';
 
 class AppModule extends Module {
   @override
   void binds(Injector i) {
+    //Usecases
+    i.addLazySingleton<PostGeminiUsecase>(PostGeminiImpUsecase.new);
+
+    //Repositories
+    i.addLazySingleton<PostGeminiRepository>(PostGeminiImpRepository.new);
+
+    //Datasources
+    i.addLazySingleton<PostGeminiDatasource>(PostGeminiImpDatasource.new);
+
     //Controllers
     i.addLazySingleton(SystemController.new);
-    // i.addLazySingleton(DocController.new);
-    // i.addLazySingleton(MicrophoneController.new);
-    // i.addLazySingleton(UserController.new);
 
     //Clients Https
     i.addLazySingleton(GeminiClient.new);
@@ -21,9 +29,6 @@ class AppModule extends Module {
     //Services
     i.addLazySingleton(RemoteConfig.new);
     i.addLazySingleton(ApiConfig.new);
-    // i.addLazySingleton(DocDataService.new);
-    // i.addLazySingleton(PdfSerivce.new);
-    // i.addLazySingleton(LocalConfigSerivce.new);
 
     super.binds(i);
   }

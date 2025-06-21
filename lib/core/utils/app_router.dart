@@ -25,7 +25,7 @@ class AppRouter {
     );
   }
 
-  static goToEditPage({DocData? doc}) async {
+  static goToEditPage({DocDto? doc}) async {
     return Modular.to.pushNamed(
       Routes.createPage,
       arguments: {"doc": doc, "editMode": true},
