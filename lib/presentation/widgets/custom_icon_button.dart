@@ -8,11 +8,12 @@ class CustomIconButton extends StatelessWidget {
     this.color,
     this.icon,
     this.enable,
-    this.isLoading,
     this.onTap,
     this.size,
     this.badged,
     this.badgedColor,
+    this.padding,
+    this.gradient,
   });
 
   final Function()? onTap;
@@ -20,14 +21,15 @@ class CustomIconButton extends StatelessWidget {
   final Color? color;
   final double? size;
   final bool? enable;
-  final bool? isLoading;
   final bool? badged;
   final Color? badgedColor;
+  final EdgeInsets? padding;
+  final Gradient? gradient;
 
   @override
   Widget build(BuildContext context) {
     return AbsorbPointer(
-      absorbing: (isLoading ?? false) || !(enable ?? true),
+      absorbing: !(enable ?? true),
       child: Material(
         color:
             badged ?? false
@@ -39,13 +41,10 @@ class CustomIconButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(360),
           child: Container(
             decoration: BoxDecoration(
-              color:
-                  !(isLoading ?? false)
-                      ? AppColors.transparent
-                      : (color ?? AppColors.text),
               borderRadius: BorderRadius.circular(360),
+              gradient: gradient,
             ),
-            padding: const EdgeInsets.all(Spaces.x1),
+            padding: padding ?? const EdgeInsets.all(Spaces.half),
             child: Icon(icon, color: color ?? AppColors.text, size: size),
           ),
         ),

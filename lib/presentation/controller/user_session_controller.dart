@@ -3,6 +3,7 @@ import 'package:orca_ai/core/base/status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:orca_ai/core/enums/status.dart';
 import 'package:orca_ai/core/models/request_result.dart';
+import 'package:orca_ai/core/utils/app_router.dart';
 import 'package:orca_ai/services/firebase_auth_service.dart';
 
 class UserSessionController extends BaseStatus {
@@ -72,6 +73,8 @@ class UserSessionController extends BaseStatus {
 
   Future<RequestResult> signOut() async {
     await _firebaseAuthService.signOut();
+    reset();
+    AppRouter.goToLandingPage();
 
     return RequestResult(status: true);
   }

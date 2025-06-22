@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/app_settings.dart';
 import 'package:orca_ai/core/constants/app_colors.dart';
+import 'package:orca_ai/presentation/controller/doc_controller.dart';
 import 'package:orca_ai/presentation/controller/system_controller.dart';
+import 'package:orca_ai/presentation/controller/user_controller.dart';
 import 'package:orca_ai/presentation/controller/user_session_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +29,8 @@ class OrcaAiApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Modular.get<UserSessionController>(),
         ),
+        ChangeNotifierProvider(create: (_) => Modular.get<DocController>()),
+        ChangeNotifierProvider(create: (_) => Modular.get<UserController>()),
       ],
       child: MaterialApp.router(
         title: 'Orça.ai',

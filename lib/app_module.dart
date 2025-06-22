@@ -3,8 +3,11 @@ import 'package:orca_ai/core/clients/gemini_client.dart';
 import 'package:orca_ai/core/configs/api_config.dart';
 import 'package:orca_ai/core/constants/routes.dart';
 import 'package:orca_ai/core/utils/auth_guard.dart';
+import 'package:orca_ai/presentation/controller/doc_controller.dart';
+import 'package:orca_ai/presentation/controller/user_controller.dart';
 import 'package:orca_ai/presentation/controller/user_session_controller.dart';
 import 'package:orca_ai/presentation/pages/create_account_page.dart';
+import 'package:orca_ai/presentation/pages/create_page.dart';
 import 'package:orca_ai/presentation/pages/landing_page.dart';
 import 'package:orca_ai/presentation/pages/login_page.dart';
 import 'package:orca_ai/services/firebase_auth_service.dart';
@@ -29,6 +32,8 @@ class AppModule extends Module {
     //Controllers
     i.addLazySingleton(SystemController.new);
     i.addLazySingleton(UserSessionController.new);
+    i.addLazySingleton(DocController.new);
+    i.addLazySingleton(UserController.new);
 
     //Clients Https
     i.addLazySingleton(GeminiClient.new);
@@ -54,16 +59,17 @@ class AppModule extends Module {
       child: (ctx) => const DashboardPage(),
       guards: [AuthGuard()],
     );
+    r.child(
+      Routes.createPage,
+      child:
+          (ctx) => CreatePage(
+            editMode: r.args.data?['editMode'],
+            prompt: r.args.data?['prompt'],
+            doc: r.args.data?['doc'],
+          ),
+    );
     // r.child(Routes.homePage, child: (ctx) => const HomePage());
-    // r.child(
-    //   Routes.createPage,
-    //   child:
-    //       (ctx) => CreatePage(
-    //         editMode: r.args.data?['editMode'],
-    //         prompt: r.args.data?['prompt'],
-    //         doc: r.args.data?['doc'],
-    //       ),
-    // );
+
     // r.child(Routes.previewPage, child: (ctx) => const PreviewPage());
     // r.child(Routes.listenPage, child: (ctx) => const ListenPage());
 
