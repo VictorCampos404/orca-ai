@@ -59,14 +59,14 @@ class PrimaryButton extends StatelessWidget {
                     child: CircularProgressIndicator(
                       color: color ?? AppColors.primary,
                       strokeWidth: 2,
-                      backgroundColor: textColor ?? AppColors.background,
+                      backgroundColor: textColor ?? Colors.white,
                     ),
                   )
                   : Text(
                     text,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.button.copyWith(
-                      color: textColor ?? AppColors.background,
+                      color: textColor ?? Colors.white,
                     ),
                   ),
         ),

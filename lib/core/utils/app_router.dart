@@ -7,6 +7,10 @@ class AppRouter {
     return Modular.to.pop();
   }
 
+  static goToLandingPage() async {
+    return Modular.to.pushNamedAndRemoveUntil(Routes.landingPage, (_) => false);
+  }
+
   static goToHomePage() async {
     return Modular.to.pushNamed(Routes.homePage);
   }
@@ -50,5 +54,9 @@ class AppRouter {
 
   static goToDashboardPage() async {
     return Modular.to.pushNamed(Routes.dashboardPage);
+  }
+
+  static goToCreateAccountPage() async {
+    return Modular.to.pushNamed(Routes.createAccountPage);
   }
 }

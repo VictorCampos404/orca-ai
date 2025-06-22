@@ -2,7 +2,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/core/clients/gemini_client.dart';
 import 'package:orca_ai/core/configs/api_config.dart';
 import 'package:orca_ai/core/constants/routes.dart';
+import 'package:orca_ai/core/utils/auth_guard.dart';
 import 'package:orca_ai/presentation/controller/user_session_controller.dart';
+import 'package:orca_ai/presentation/pages/create_account_page.dart';
+import 'package:orca_ai/presentation/pages/landing_page.dart';
 import 'package:orca_ai/presentation/pages/login_page.dart';
 import 'package:orca_ai/services/firebase_auth_service.dart';
 import 'package:orca_ai/services/remote_config_service.dart';
@@ -40,8 +43,17 @@ class AppModule extends Module {
 
   @override
   void routes(RouteManager r) {
-    r.child(Routes.dashboardPage, child: (ctx) => const DashboardPage());
+    r.child(Routes.landingPage, child: (ctx) => const LandingPage());
     r.child(Routes.loginPage, child: (ctx) => const LoginPage());
+    r.child(
+      Routes.createAccountPage,
+      child: (ctx) => const CreateAccountPage(),
+    );
+    r.child(
+      Routes.dashboardPage,
+      child: (ctx) => const DashboardPage(),
+      guards: [AuthGuard()],
+    );
     // r.child(Routes.homePage, child: (ctx) => const HomePage());
     // r.child(
     //   Routes.createPage,

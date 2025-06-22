@@ -6,14 +6,14 @@ import 'package:orca_ai/presentation/controller/user_session_controller.dart';
 import 'package:orca_ai/presentation/widgets/device_builder.dart';
 import 'package:provider/provider.dart';
 
-class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  State<LandingPage> createState() => _LandingPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer2<SystemController, UserSessionController>(
@@ -24,17 +24,12 @@ class _DashboardPageState extends State<DashboardPage> {
               body: Center(
                 child: Column(
                   children: [
-                    Text(
-                      "Dashboard: ${device.name} bla bla bla",
-                      style: AppTextStyles.megaTitle,
-                    ),
+                    Text("Landing Page", style: AppTextStyles.megaTitle),
                     TextButton(
                       onPressed: () {
-                        userSessionController.signOut();
-                        userSessionController.reset();
-                        AppRouter.goToLandingPage();
+                        AppRouter.goToLoginPage();
                       },
-                      child: Text("Sair"),
+                      child: Text("Login"),
                     ),
                   ],
                 ),

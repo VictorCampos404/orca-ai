@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/core/constants/app_colors.dart';
 import 'package:orca_ai/core/constants/app_text_styles.dart';
 import 'package:orca_ai/core/constants/spaces.dart';
 import 'package:orca_ai/core/enums/device.dart';
 import 'package:orca_ai/core/enums/status.dart';
+import 'package:orca_ai/core/utils/app_router.dart';
 import 'package:orca_ai/core/utils/pop_up.dart';
 import 'package:orca_ai/presentation/controller/user_session_controller.dart';
 import 'package:orca_ai/presentation/widgets/custom_input.dart';
@@ -27,11 +29,22 @@ class _LoginPageState extends State<LoginPage> {
         return DeviceBuilder(
           builder: (context, device) {
             return Scaffold(
-              backgroundColor: AppColors.background,
+              backgroundColor: AppColors.backgroundSmoke,
               body: Center(
                 child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.background,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                      ),
+                    ],
+                  ),
                   constraints: BoxConstraints(maxWidth: Device.phone.maxWidth),
                   padding: EdgeInsets.all(Spaces.x3),
+                  margin: EdgeInsets.all(Spaces.x2),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -71,13 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () async {
                                 if (userSessionController.isLoading) return;
 
-                                // final result = await userSessionController.login();
-
-                                // if (result.status) {
-                                //   return;
-                                // }
-
-                                // PopUp.showResult(result: result);
+                                AppRouter.goToCreateAccountPage();
                               },
                             ),
                           ),
@@ -92,6 +99,18 @@ class _LoginPageState extends State<LoginPage> {
                                     await userSessionController.login();
 
                                 if (result.status) {
+                                  final continueTo =
+                                      Modular.args.queryParams['continue'];
+
+                                  if ((continueTo ?? '').isNotEmpty) {
+                                    Modular.to.navigate(
+                                      Uri.decodeComponent(continueTo ?? ''),
+                                    );
+                                    return;
+                                  }
+
+                                  AppRouter.goToDashboardPage();
+
                                   return;
                                 }
 
