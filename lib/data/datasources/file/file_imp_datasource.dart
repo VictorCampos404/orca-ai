@@ -1,21 +1,17 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:orca_ai/core/enums/file_provider_type.dart';
 import 'package:orca_ai/core/enums/file_type.dart';
 import 'package:orca_ai/data/data.dart';
-import 'package:orca_ai/data/datasources/file/file_datasource.dart';
 import 'package:orca_ai/services/firebase_storage_service.dart';
 import 'package:share_plus/share_plus.dart';
 
 class FileImpDatasource implements FileDatasource {
-  // late CustomFileDownload downloaderService;
-  late FirebaseStorageService firebaseStorageService;
+  final FirebaseStorageService _firebaseStorageService;
 
-  FileImpDatasource({
-    // required this.downloaderService,
-    required this.firebaseStorageService,
-  });
+  FileImpDatasource(this._firebaseStorageService);
 
   @override
   Future<void> delete({
@@ -23,17 +19,26 @@ class FileImpDatasource implements FileDatasource {
     required String path,
   }) async {
     if (provider == FileProviderType.firebase) {
-      return firebaseStorageService.delete(path: path);
+      return _firebaseStorageService.delete(path: path);
     }
   }
 
   @override
-  Future<File> download({required String url, required String name}) async {
-    // return await downloaderService.inTemporaryDirectoryFromUrl(
-    //   url: url,
-    //   name: name,
-    // );
-    return File("");
+  Future<Uint8List> download({required String url}) async {
+    final dio = Dio();
+
+    final response = await dio.get(
+      url,
+      options: Options(responseType: ResponseType.bytes),
+    );
+
+    if (response.statusCode == 200) {
+      return Uint8List.fromList(response.data);
+    }
+
+    throw Exception(
+      'Falha ao carregar dados. Código de status: ${response.statusCode}',
+    );
   }
 
   @override
@@ -43,7 +48,7 @@ class FileImpDatasource implements FileDatasource {
     required Uint8List file,
     Function(double p1)? onProgress,
   }) async {
-    final url = await firebaseStorageService.upload(
+    final url = await _firebaseStorageService.upload(
       path: path,
       file: file,
       contentType: contentType,
@@ -62,6 +67,7 @@ class FileImpDatasource implements FileDatasource {
         orElse: () => FileType.unknow,
       ),
       name: name,
+      bytes: file,
       createdAt: DateTime.now(),
     );
   }

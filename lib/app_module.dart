@@ -10,8 +10,10 @@ import 'package:orca_ai/presentation/pages/create_account_page.dart';
 import 'package:orca_ai/presentation/pages/create_page.dart';
 import 'package:orca_ai/presentation/pages/landing_page.dart';
 import 'package:orca_ai/presentation/pages/login_page.dart';
+import 'package:orca_ai/presentation/pages/preview_page.dart';
 import 'package:orca_ai/services/firebase_auth_service.dart';
 import 'package:orca_ai/services/firebase_storage_service.dart';
+import 'package:orca_ai/services/pdf_serivce.dart';
 import 'package:orca_ai/services/remote_config_service.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/domain/domain.dart';
@@ -47,6 +49,7 @@ class AppModule extends Module {
     i.addLazySingleton(ApiConfig.new);
     i.addLazySingleton(FirebaseAuthService.new);
     i.addLazySingleton(FirebaseStorageService.new);
+    i.addLazySingleton(PdfSerivce.new);
 
     super.binds(i);
   }
@@ -73,6 +76,7 @@ class AppModule extends Module {
             doc: r.args.data?['doc'],
           ),
     );
+    r.child(Routes.previewPage, child: (ctx) => const PreviewPage());
     // r.child(Routes.homePage, child: (ctx) => const HomePage());
 
     // r.child(Routes.previewPage, child: (ctx) => const PreviewPage());

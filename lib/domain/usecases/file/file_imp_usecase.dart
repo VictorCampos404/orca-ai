@@ -12,8 +12,8 @@ class FileImpUsecase implements FileUsecase {
   FileImpUsecase(this._fileRepository);
 
   @override
-  Future<File> download({required String url, required String name}) async {
-    return await _fileRepository.download(url: url, name: name);
+  Future<Uint8List> download({required String url}) async {
+    return await _fileRepository.download(url: url);
   }
 
   @override

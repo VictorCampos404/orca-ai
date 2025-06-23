@@ -6,7 +6,7 @@ import 'package:orca_ai/data/data.dart';
 import 'package:share_plus/share_plus.dart';
 
 abstract class FileRepository {
-  Future<File> download({required String url, required String name});
+  Future<Uint8List> download({required String url});
   Future<FileDto> upload({
     required String path,
     required String contentType,

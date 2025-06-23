@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/core/enums/file_provider_type.dart';
 import 'package:orca_ai/core/enums/file_type.dart';
 import 'package:orca_ai/core/enums/status.dart';
 import 'package:collection/collection.dart';
+import 'package:orca_ai/domain/domain.dart';
 
 class FileDto {
   String? url;
@@ -11,6 +15,7 @@ class FileDto {
   FileProviderType? provider;
   DateTime? createdAt;
   Status? status;
+  Uint8List? bytes;
 
   FileDto({
     this.url,
@@ -19,8 +24,11 @@ class FileDto {
     this.type,
     this.provider,
     this.createdAt,
+    this.bytes,
     this.status = Status.success,
-  });
+  }) {
+    _downloadBytes();
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -51,19 +59,11 @@ class FileDto {
     );
   }
 
-  // Future<File?> downloadFile() async {
-  //   if (url == null || name == null) return null;
+  void _downloadBytes() async {
+    if (url == null || bytes != null) return;
 
-  //   final fileUseCase = Modular.get<FileUseCase>();
+    final fileUseCase = Modular.get<FileUsecase>();
 
-  //   return await fileUseCase.download(url: url ?? '', name: name ?? '');
-  // }
-
-  // Future<void> deleteRemoteFile() async {
-  //   if (provider == null || path == null) return;
-
-  //   final fileUseCase = Modular.get<FileUseCase>();
-
-  //   await fileUseCase.delete(provider: provider!, path: path!);
-  // }
+    bytes = await fileUseCase.download(url: url ?? '');
+  }
 }

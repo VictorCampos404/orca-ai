@@ -1,24 +1,22 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:orca_ai/core/base/status.dart';
 import 'package:orca_ai/core/enums/list_type.dart';
+import 'package:orca_ai/core/enums/status.dart';
 import 'package:orca_ai/core/utils/extensions.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/domain/domain.dart';
+import 'package:orca_ai/services/pdf_serivce.dart';
 
 class DocController extends BaseStatus {
   final PostGeminiUsecase _postGeminiUsecase;
   final FileUsecase _fileUsecase;
+  final PdfSerivce _pdfSerivce;
 
   late List<DocDto> _documents;
   List<DocDto> get documents => _documents;
 
   late ListType? _listType;
   ListType? get listType => _listType;
-
-  late bool _isLoading;
-  bool get isLoading => _isLoading;
 
   late bool _isGeminiLoading;
   bool get isGeminiLoading => _isGeminiLoading;
@@ -28,18 +26,17 @@ class DocController extends BaseStatus {
   late TextEditingController descriptionCtrl;
   late TextEditingController valueCtrl;
 
-  late File? _preview;
-  File? get preview => _preview;
+  late DocDto? _selectedDoc;
+  DocDto? get selectedDoc => _selectedDoc;
 
-  DocController(this._postGeminiUsecase, this._fileUsecase) {
+  DocController(this._postGeminiUsecase, this._fileUsecase, this._pdfSerivce) {
     reset();
   }
 
   void reset() async {
-    _preview = null;
+    _selectedDoc = null;
     _documents = [];
     _listType = ListType.list;
-    _isLoading = false;
     _isGeminiLoading = false;
     titleCtrl = TextEditingController();
     acCtrl = TextEditingController();
@@ -65,7 +62,7 @@ class DocController extends BaseStatus {
   }
 
   void resetCreateDocument({DocDto? doc}) {
-    _preview = null;
+    _selectedDoc = null;
     titleCtrl = TextEditingController(text: doc?.title);
     acCtrl = TextEditingController(text: doc?.ac);
     descriptionCtrl = TextEditingController(text: doc?.description);
@@ -73,32 +70,32 @@ class DocController extends BaseStatus {
     notifyListeners();
   }
 
-  void setPreview(File? file) {
-    _preview = file;
+  void setSelectedDoc(DocDto? doc) {
+    _selectedDoc = doc;
     notifyListeners();
   }
 
   Future<void> getSavedPdfs() async {
-    _isLoading = true;
+    setStatus(Status.loading);
     notifyListeners();
 
     try {
       _documents = [
         DocDto(
-          name: 'Orçamento-${DateTime.now().toFileName}',
           title: titleCtrl.text,
           ac: acCtrl.text,
           description: descriptionCtrl.text,
           value: valueCtrl.text,
           createdAt: DateTime.now(),
+          file: FileDto(name: 'Orçamento-${DateTime.now().toFileName}'),
         ),
         DocDto(
-          name: 'Orçamento-${DateTime.now().toFileName}',
           title: titleCtrl.text,
           ac: acCtrl.text,
           description: descriptionCtrl.text,
           value: valueCtrl.text,
           createdAt: DateTime.now(),
+          file: FileDto(name: 'Orçamento-${DateTime.now().toFileName}'),
         ),
       ];
       _documents.sort(
@@ -107,11 +104,11 @@ class DocController extends BaseStatus {
                 ? -1
                 : 1,
       );
-      _isLoading = false;
+      setStatus(Status.success);
       notifyListeners();
     } catch (e) {
       print('Ocorreu um erro ao buscar os PDFs: $e');
-      _isLoading = false;
+      setStatus(Status.error);
       notifyListeners();
     }
   }
@@ -133,9 +130,9 @@ class DocController extends BaseStatus {
   }
 
   Future<void> createDocument(UserDto user) async {
+    setStatus(Status.loading);
     try {
       final newDoc = DocDto(
-        name: 'Orçamento-${DateTime.now().toFileName}',
         title: titleCtrl.text,
         ac: acCtrl.text,
         description: descriptionCtrl.text,
@@ -143,14 +140,43 @@ class DocController extends BaseStatus {
         createdAt: DateTime.now(),
       );
 
-      // _preview = await _pdfSerivce.create(newDoc, user);
+      final result = await _pdfSerivce.create(newDoc, user);
+
+      if (result == null) return;
+
+      final file = await _fileUsecase.upload(
+        path: 'teste.pdf',
+        contentType: 'application/pdf',
+        file: result,
+      );
+
+      newDoc.file = file;
+
+      _documents.add(newDoc);
+
+      _selectedDoc = newDoc;
 
       // newDoc.path = _preview?.path;
 
       // await _docDataService.addDoc(newDoc);
 
+      setStatus(Status.success);
+    } catch (error) {
+      print(error);
+      setStatus(Status.error);
+    }
+  }
+
+  Future<void> download() async {
+    try {
+      final teste = await _fileUsecase.download(
+        url:
+            "https://firebasestorage.googleapis.com/v0/b/orcaai-hml.firebasestorage.app/o/teste.pdf?alt=media&token=55daec93-2862-4369-b807-47b0e8218660",
+      );
+
+      print(teste);
+
       notifyListeners();
-      getSavedPdfs();
     } catch (error) {
       print(error);
     }
@@ -159,8 +185,6 @@ class DocController extends BaseStatus {
   Future<void> updateDocument(DocDto doc, UserDto user) async {
     try {
       final newDoc = DocDto(
-        name: doc.name,
-        path: doc.path,
         createdAt: doc.createdAt,
         title: titleCtrl.text,
         ac: acCtrl.text,

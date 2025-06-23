@@ -145,22 +145,24 @@ class _CreatePageState extends State<CreatePage> {
                                   userController.userData ?? UserDto(),
                                 );
                               } else {
-                                if (!userController.hasUser) {
-                                  userController.reset();
-                                  await WidgetBottomSheet.show(
-                                    context: context,
-                                    child: const FirstDocumentBody(),
-                                  );
+                                // if (!userController.hasUser) {
+                                //   userController.reset();
+                                //   await WidgetBottomSheet.show(
+                                //     context: context,
+                                //     child: const FirstDocumentBody(),
+                                //   );
 
-                                  if (!userController.hasUser) return;
-                                }
+                                //   if (!userController.hasUser) return;
+                                // }
 
                                 await docController.createDocument(
-                                  userController.userData ?? UserDto(),
+                                  userController.userData ??
+                                      UserDto(name: "Victor", phone: "Teste"),
                                 );
+                                AppRouter.goToPreviewPage();
                               }
 
-                              AppRouter.goToPreviewPage(popAndPush: true);
+                              // AppRouter.goToPreviewPage(popAndPush: true);
                             },
                           ),
                         )

@@ -25,13 +25,13 @@ class DocumentCard extends StatelessWidget {
     return SizedBox(
       width: list ?? false ? null : width,
       child: Tooltip(
-        message: docData.name,
+        message: docData.file?.name,
         child: Material(
           color: AppColors.background,
           child: InkWell(
             borderRadius: BorderRadius.circular(5),
             onTap: () {
-              context.read<DocController>().setPreview(docData.file);
+              context.read<DocController>().setSelectedDoc(docData);
               AppRouter.goToPreviewPage();
             },
             child: Padding(
@@ -82,12 +82,12 @@ class DocumentCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                docData.name ?? '',
+                                docData.file?.name ?? '',
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.itemTitle,
                               ),
                               Text(
-                                'Tamanho: ${((docData.file?.lengthSync() ?? 0) / 1024).toStringAsFixed(2)} KB',
+                                'Tamanho: ${((docData.file?.bytes?.length ?? 0) / 1024).toStringAsFixed(2)} KB',
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.itemSubTitle,
                               ),
@@ -118,7 +118,7 @@ class DocumentCard extends StatelessWidget {
                                             horizontal: Spaces.x2,
                                           ),
                                           child: Text(
-                                            docData.name ?? '',
+                                            docData.file?.name ?? '',
                                             overflow: TextOverflow.ellipsis,
                                             style:
                                                 AppTextStyles.bottomSheetTitle,
@@ -148,9 +148,9 @@ class DocumentCard extends StatelessWidget {
                                     text: 'Visualizar',
                                     onTap: () {
                                       AppRouter.pop();
-                                      context.read<DocController>().setPreview(
-                                        docData.file,
-                                      );
+                                      context
+                                          .read<DocController>()
+                                          .setSelectedDoc(docData);
                                       AppRouter.goToPreviewPage();
                                     },
                                   ),
@@ -266,7 +266,7 @@ class DocumentCard extends StatelessWidget {
         return AlertDialog(
           title: const Text('Confirmar Exclusão'),
           content: Text(
-            'Você tem certeza que deseja excluir este arquivo ${doc?.name} permanentemente?',
+            'Você tem certeza que deseja excluir este arquivo ${docData.file?.name} permanentemente?',
           ),
           actions: <Widget>[
             TextButton(

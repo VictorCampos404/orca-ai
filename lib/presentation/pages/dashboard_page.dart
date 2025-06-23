@@ -210,6 +210,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         onTap: () {
                           docController.resetCreateDocument();
                           AppRouter.goToCreatePage();
+
+                          // docController.download();
                         },
                       ),
                     ],

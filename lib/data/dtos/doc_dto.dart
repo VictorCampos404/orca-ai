@@ -1,40 +1,35 @@
-import 'dart:io';
+import 'package:orca_ai/data/data.dart';
 
 class DocDto {
-  String? path;
-  String? name;
   String? title;
   String? ac;
   String? description;
   String? value;
   DateTime? createdAt;
+  FileDto? file;
 
   DocDto({
-    this.path,
-    this.name,
     this.title,
     this.ac,
     this.description,
     this.value,
     this.createdAt,
+    this.file,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'path': path,
-      'name': name,
       'title': title,
       'ac': ac,
       'description': description,
       'value': value,
       'createdAt': createdAt?.toIso8601String(),
+      'file': file?.toMap(),
     };
   }
 
   factory DocDto.fromMap(Map<String, dynamic> map) {
     return DocDto(
-      path: map['path'],
-      name: map['name'],
       title: map['title'],
       ac: map['ac'],
       description: map['description'],
@@ -43,13 +38,8 @@ class DocDto {
           map['createdAt'] == null
               ? null
               : DateTime.parse(map['createdAt'] as String),
+      file: map['file'] == null ? null : FileDto.fromMap(map['file']),
     );
-  }
-
-  File? get file {
-    if (path == null) return null;
-
-    return File(path!);
   }
 
   double? get valueToDouble {
@@ -76,5 +66,9 @@ class DocDto {
 
     // return extenso(n).capitalizar();
     return '';
+  }
+
+  bool get havePreview {
+    return !(file?.bytes == null || file?.name == null);
   }
 }

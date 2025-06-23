@@ -29,9 +29,9 @@ class FileImpRepository implements FileRepository {
   }
 
   @override
-  Future<File> download({required String url, required String name}) async {
+  Future<Uint8List> download({required String url}) async {
     try {
-      return await _fileDataSource.download(url: url, name: name);
+      return await _fileDataSource.download(url: url);
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
