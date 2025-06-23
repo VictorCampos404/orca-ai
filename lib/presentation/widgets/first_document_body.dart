@@ -3,6 +3,7 @@ import 'package:orca_ai/core/constants/app_colors.dart';
 import 'package:orca_ai/core/constants/app_text_styles.dart';
 import 'package:orca_ai/core/constants/custom_icons.dart';
 import 'package:orca_ai/core/constants/spaces.dart';
+import 'package:orca_ai/core/formaters/masks.dart';
 import 'package:orca_ai/core/utils/app_router.dart';
 import 'package:orca_ai/presentation/controller/user_controller.dart';
 import 'package:orca_ai/presentation/widgets/custom_icon_button.dart';
@@ -55,7 +56,7 @@ class _FirstDocumentBodyState extends State<FirstDocumentBody> {
                       title: "Seu celular:",
                       hint: "(00) 00000-0000",
                       controller: userController.phoneCtrl,
-                      inputFormatters: [],
+                      inputFormatters: [Masks.phoneMask],
                       onChanged: (value) {
                         userController.updateStatus();
                       },

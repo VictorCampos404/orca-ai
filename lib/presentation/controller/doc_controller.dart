@@ -9,6 +9,7 @@ import 'package:orca_ai/domain/domain.dart';
 
 class DocController extends BaseStatus {
   final PostGeminiUsecase _postGeminiUsecase;
+  final FileUsecase _fileUsecase;
 
   late List<DocDto> _documents;
   List<DocDto> get documents => _documents;
@@ -30,7 +31,7 @@ class DocController extends BaseStatus {
   late File? _preview;
   File? get preview => _preview;
 
-  DocController(this._postGeminiUsecase) {
+  DocController(this._postGeminiUsecase, this._fileUsecase) {
     reset();
   }
 

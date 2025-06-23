@@ -11,6 +11,7 @@ import 'package:orca_ai/presentation/pages/create_page.dart';
 import 'package:orca_ai/presentation/pages/landing_page.dart';
 import 'package:orca_ai/presentation/pages/login_page.dart';
 import 'package:orca_ai/services/firebase_auth_service.dart';
+import 'package:orca_ai/services/firebase_storage_service.dart';
 import 'package:orca_ai/services/remote_config_service.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/domain/domain.dart';
@@ -22,12 +23,15 @@ class AppModule extends Module {
   void binds(Injector i) {
     //Usecases
     i.addLazySingleton<PostGeminiUsecase>(PostGeminiImpUsecase.new);
+    i.addLazySingleton<FileUsecase>(FileImpUsecase.new);
 
     //Repositories
     i.addLazySingleton<PostGeminiRepository>(PostGeminiImpRepository.new);
+    i.addLazySingleton<FileRepository>(FileImpRepository.new);
 
     //Datasources
     i.addLazySingleton<PostGeminiDatasource>(PostGeminiImpDatasource.new);
+    i.addLazySingleton<FileDatasource>(FileImpDatasource.new);
 
     //Controllers
     i.addLazySingleton(SystemController.new);
@@ -42,6 +46,7 @@ class AppModule extends Module {
     i.addLazySingleton(RemoteConfigService.new);
     i.addLazySingleton(ApiConfig.new);
     i.addLazySingleton(FirebaseAuthService.new);
+    i.addLazySingleton(FirebaseStorageService.new);
 
     super.binds(i);
   }

@@ -4,6 +4,7 @@ import 'package:orca_ai/core/constants/app_colors.dart';
 import 'package:orca_ai/core/constants/app_text_styles.dart';
 import 'package:orca_ai/core/constants/custom_icons.dart';
 import 'package:orca_ai/core/constants/spaces.dart';
+import 'package:orca_ai/core/formaters/money_format.dart';
 import 'package:orca_ai/core/utils/app_router.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/presentation/controller/doc_controller.dart';
@@ -113,7 +114,7 @@ class _CreatePageState extends State<CreatePage> {
                                 CustomInput(
                                   title: "Valor (R\$):",
                                   hint: "R\$ 0,00",
-                                  inputFormatters: [],
+                                  inputFormatters: [MoneyFormat.mask],
                                   controller: docController.valueCtrl,
                                 ),
                               ],
