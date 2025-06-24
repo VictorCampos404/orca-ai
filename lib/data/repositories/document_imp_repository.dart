@@ -9,9 +9,9 @@ class DocumentImpRepository implements DocumentRepository {
   DocumentImpRepository(this._documentDatasource);
 
   @override
-  Future<String> save({required DocDto doc}) async {
+  Future<DocDto> create({required DocDto doc}) async {
     try {
-      return await _documentDatasource.save(doc: doc);
+      return await _documentDatasource.create(doc: doc);
     } catch (error) {
       debugPrint(error.toString());
       rethrow;

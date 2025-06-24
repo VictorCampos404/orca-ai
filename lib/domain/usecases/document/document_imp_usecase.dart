@@ -8,8 +8,8 @@ class DocumentImpUsecase implements DocumentUsecase {
   DocumentImpUsecase(this._documentRepository);
 
   @override
-  Future<String> save({required DocDto doc}) async {
-    return await _documentRepository.save(doc: doc);
+  Future<DocDto> create({required DocDto doc}) async {
+    return await _documentRepository.create(doc: doc);
   }
 
   @override

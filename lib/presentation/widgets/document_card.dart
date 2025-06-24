@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/core/constants/app_colors.dart';
 import 'package:orca_ai/core/constants/app_text_styles.dart';
 import 'package:orca_ai/core/constants/custom_icons.dart';
 import 'package:orca_ai/core/constants/spaces.dart';
 import 'package:orca_ai/core/utils/app_router.dart';
+import 'package:orca_ai/core/utils/pop_up.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/presentation/controller/doc_controller.dart';
 import 'package:orca_ai/presentation/widgets/custom_icon_button.dart';
 import 'package:orca_ai/presentation/widgets/custom_option_button.dart';
 import 'package:orca_ai/presentation/widgets/widget_bottom_sheet.dart';
-import 'package:provider/provider.dart';
 
 class DocumentCard extends StatelessWidget {
   final DocDto docData;
@@ -31,7 +32,7 @@ class DocumentCard extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(5),
             onTap: () {
-              context.read<DocController>().setSelectedDoc(docData);
+              Modular.get<DocController>().setSelectedDoc(docData);
               AppRouter.goToPreviewPage();
             },
             child: Padding(
@@ -148,8 +149,7 @@ class DocumentCard extends StatelessWidget {
                                     text: 'Visualizar',
                                     onTap: () {
                                       AppRouter.pop();
-                                      context
-                                          .read<DocController>()
+                                      Modular.get<DocController>()
                                           .setSelectedDoc(docData);
                                       AppRouter.goToPreviewPage();
                                     },
@@ -164,8 +164,7 @@ class DocumentCard extends StatelessWidget {
                                     text: 'Editar',
                                     onTap: () {
                                       AppRouter.pop();
-                                      context
-                                          .read<DocController>()
+                                      Modular.get<DocController>()
                                           .resetCreateDocument(doc: docData);
 
                                       AppRouter.goToEditPage(doc: docData);
@@ -266,7 +265,7 @@ class DocumentCard extends StatelessWidget {
         return AlertDialog(
           title: const Text('Confirmar Exclusão'),
           content: Text(
-            'Você tem certeza que deseja excluir este arquivo ${docData.file?.name} permanentemente?',
+            'Você tem certeza que deseja excluir este arquivo ${doc?.file?.name} permanentemente?',
           ),
           actions: <Widget>[
             TextButton(
@@ -283,24 +282,11 @@ class DocumentCard extends StatelessWidget {
     );
 
     if (confirmed == true) {
-      try {
-        await context.read<DocController>().deleteDocDta(doc ?? DocDto());
+      final result = await Modular.get<DocController>().deleteDocument(
+        doc?.id ?? '',
+      );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Arquivo excluído com sucesso!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        await context.read<DocController>().getSavedPdfs();
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Falha ao excluir o arquivo: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      PopUp.showResult(result: result);
     }
   }
 }

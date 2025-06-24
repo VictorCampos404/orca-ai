@@ -1,23 +1,52 @@
-import 'package:orca_ai/data/datasources/document/document_datasource.dart';
-import 'package:orca_ai/data/dtos/doc_dto.dart';
+import 'package:orca_ai/data/data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:orca_ai/domain/domain.dart';
 import 'package:orca_ai/services/firebase_auth_service.dart';
+import 'package:orca_ai/services/firebase_storage_service.dart';
+import 'package:orca_ai/services/pdf_serivce.dart';
 
 class DocumentImpDatasource implements DocumentDatasource {
   final FirebaseAuthService _firebaseAuthService;
+  final FirebaseStorageService _firebaseStorageService;
+  final PdfSerivce _pdfSerivce;
+  final FileUsecase _fileUsecase;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  DocumentImpDatasource(this._firebaseAuthService);
+  DocumentImpDatasource(
+    this._firebaseAuthService,
+    this._firebaseStorageService,
+    this._pdfSerivce,
+    this._fileUsecase,
+  );
 
   @override
-  Future<String> save({required DocDto doc}) async {
+  Future<DocDto> create({required DocDto doc}) async {
+    final result = await _pdfSerivce.create(
+      doc,
+      UserDto(name: "Victor", phone: "Exemplo"),
+    );
+
+    final file = await _fileUsecase.upload(
+      path: 'teste.pdf',
+      contentType: 'application/pdf',
+      file: result!,
+    );
+
+    doc.file = file;
+
     final response = await _getCollection().add(doc.toMap());
 
-    return response.id;
+    doc.id = response.id;
+
+    return doc;
   }
 
   @override
   Future<void> delete({required String id}) async {
+    final doc = await get(id: id);
+
+    _firebaseStorageService.delete(path: doc.file?.path ?? '');
+
     await _getCollection().doc(id).delete();
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orca_ai/core/base/status.dart';
 import 'package:orca_ai/core/enums/list_type.dart';
 import 'package:orca_ai/core/enums/status.dart';
-import 'package:orca_ai/core/utils/extensions.dart';
+import 'package:orca_ai/core/models/request_result.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/domain/domain.dart';
 import 'package:orca_ai/services/pdf_serivce.dart';
@@ -102,20 +102,23 @@ class DocController extends BaseStatus {
     }
   }
 
-  Future<void> deleteDocDta(DocDto doc) async {
-    // try {
-    //   await _docDataService.deleteDoc(doc.path ?? '');
+  Future<RequestResult> deleteDocument(String id) async {
+    setStatus(Status.loading);
+    try {
+      await _documentUsecase.delete(id: id);
 
-    //   if ((await doc.file?.exists()) ?? false) {
-    //     await doc.file?.delete();
-    //     print('Arquivo excluído com sucesso');
-    //   } else {
-    //     print('O arquivo não foi encontrado no caminho');
-    //   }
-    // } catch (e) {
-    //   print('Erro ao excluir o arquivo: $e');
-    //   rethrow;
-    // }
+      _documents.removeWhere((element) => element.id == id);
+
+      setStatus(Status.success);
+      return RequestResult(
+        status: true,
+        title: "Sucesso",
+        message: "Arquivo excluído com sucesso!",
+      );
+    } catch (e) {
+      setStatus(Status.loading);
+      return RequestResult(status: false, title: "Erro", message: e.toString());
+    }
   }
 
   Future<void> createDocument(UserDto user) async {
@@ -129,29 +132,11 @@ class DocController extends BaseStatus {
         createdAt: DateTime.now(),
       );
 
-      final result = await _pdfSerivce.create(newDoc, user);
+      final documentCreated = await _documentUsecase.create(doc: newDoc);
 
-      if (result == null) return;
+      _documents.add(documentCreated);
 
-      final file = await _fileUsecase.upload(
-        path: 'teste.pdf',
-        contentType: 'application/pdf',
-        file: result,
-      );
-
-      newDoc.file = file;
-
-      final id = await _documentUsecase.save(doc: newDoc);
-
-      newDoc.id = id;
-
-      _documents.add(newDoc);
-
-      _selectedDoc = newDoc;
-
-      // newDoc.path = _preview?.path;
-
-      // await _docDataService.addDoc(newDoc);
+      _selectedDoc = documentCreated;
 
       setStatus(Status.success);
     } catch (error) {
@@ -170,7 +155,7 @@ class DocController extends BaseStatus {
         value: valueCtrl.text,
       );
 
-      await deleteDocDta(doc);
+      // await deleteDocDta(doc);
 
       // _preview = await _pdfSerivce.create(newDoc, user);
 
