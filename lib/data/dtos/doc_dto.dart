@@ -72,6 +72,6 @@ class DocDto {
   }
 
   bool get havePreview {
-    return !(file?.bytes == null || file?.name == null);
+    return !(file?.bytes == null || file?.nameWithExtension == null);
   }
 }

@@ -26,9 +26,7 @@ class FileDto {
     this.createdAt,
     this.bytes,
     this.status = Status.success,
-  }) {
-    _downloadBytes();
-  }
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -59,11 +57,17 @@ class FileDto {
     );
   }
 
-  void _downloadBytes() async {
+  Future<void> downloadBytes() async {
     if (url == null || bytes != null) return;
 
     final fileUseCase = Modular.get<FileUsecase>();
 
     bytes = await fileUseCase.download(url: url ?? '');
+  }
+
+  String? get nameWithExtension {
+    if (name == null || type == null) return null;
+
+    return "$name.${type?.name}";
   }
 }

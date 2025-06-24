@@ -83,27 +83,12 @@ class DocController extends BaseStatus {
 
   Future<void> getSavedPdfs() async {
     setStatus(Status.loading);
-    notifyListeners();
 
     try {
-      _documents = [
-        DocDto(
-          title: titleCtrl.text,
-          ac: acCtrl.text,
-          description: descriptionCtrl.text,
-          value: valueCtrl.text,
-          createdAt: DateTime.now(),
-          file: FileDto(name: 'Orçamento-${DateTime.now().toFileName}'),
-        ),
-        DocDto(
-          title: titleCtrl.text,
-          ac: acCtrl.text,
-          description: descriptionCtrl.text,
-          value: valueCtrl.text,
-          createdAt: DateTime.now(),
-          file: FileDto(name: 'Orçamento-${DateTime.now().toFileName}'),
-        ),
-      ];
+      final response = await _documentUsecase.list();
+
+      _documents.clear();
+      _documents.addAll(response);
       _documents.sort(
         (a, b) =>
             (a.createdAt?.isBefore(b.createdAt ?? DateTime.now()) ?? false)
@@ -111,11 +96,9 @@ class DocController extends BaseStatus {
                 : 1,
       );
       setStatus(Status.success);
-      notifyListeners();
     } catch (e) {
       print('Ocorreu um erro ao buscar os PDFs: $e');
       setStatus(Status.error);
-      notifyListeners();
     }
   }
 
@@ -157,6 +140,10 @@ class DocController extends BaseStatus {
       );
 
       newDoc.file = file;
+
+      final id = await _documentUsecase.save(doc: newDoc);
+
+      newDoc.id = id;
 
       _documents.add(newDoc);
 

@@ -53,7 +53,7 @@ class _PreviewPageState extends State<PreviewPage> {
                 AppRouter.pop();
               },
             ),
-            title: docController.selectedDoc?.file?.name ?? '',
+            title: docController.selectedDoc?.file?.nameWithExtension ?? '',
             actions: [
               CustomIconButton(
                 icon: CustomIcons.share_forward_2_fill,
@@ -73,14 +73,15 @@ class _PreviewPageState extends State<PreviewPage> {
                       margin: Spaces.x2,
                       onViewerReady: (document, controller) {
                         controller.setZoom(
-                          controller.centerPosition,
+                          Offset(controller.centerPosition.dx, 0),
                           controller.minScale,
                         );
                       },
                     ),
 
                     docController.selectedDoc!.file!.bytes!,
-                    sourceName: docController.selectedDoc!.file!.name!,
+                    sourceName:
+                        docController.selectedDoc!.file!.nameWithExtension!,
                   )
                   : Center(
                     child: Text(

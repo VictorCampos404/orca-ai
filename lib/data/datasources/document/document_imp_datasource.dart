@@ -29,20 +29,32 @@ class DocumentImpDatasource implements DocumentDatasource {
 
     map.addAll({'id': response.id});
 
-    return DocDto.fromMap(map);
+    final doc = DocDto.fromMap(map);
+
+    await doc.file?.downloadBytes();
+
+    return doc;
   }
 
   @override
   Future<List<DocDto>> list() async {
     final response = await _getCollection().get();
 
-    return response.docs.map((element) {
-      final map = element.data();
+    List<DocDto> list = [];
 
-      map.addAll({'id': element.id});
+    for (int i = 0; i < response.docs.length; i++) {
+      final map = response.docs[i].data();
 
-      return DocDto.fromMap(map);
-    }).toList();
+      map.addAll({'id': response.docs[i].id});
+
+      final doc = DocDto.fromMap(map);
+
+      await doc.file?.downloadBytes();
+
+      list.add(doc);
+    }
+
+    return list;
   }
 
   @override

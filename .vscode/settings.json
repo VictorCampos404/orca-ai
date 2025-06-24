@@ -12,4 +12,6 @@
         "editor.tabCompletion": "onlySnippets",
         "editor.wordBasedSuggestions": "off"
     },
+    "dart.flutterSdkPath": "C:\\Users\\Campos\\.puro\\envs\\qolls\\flutter",
+    "dart.sdkPath": "C:\\Users\\Campos\\.puro\\envs\\qolls\\flutter\\bin\\cache\\dart-sdk"
 }
