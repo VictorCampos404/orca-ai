@@ -11,6 +11,7 @@ class DocController extends BaseStatus {
   final PostGeminiUsecase _postGeminiUsecase;
   final FileUsecase _fileUsecase;
   final PdfSerivce _pdfSerivce;
+  final DocumentUsecase _documentUsecase;
 
   late List<DocDto> _documents;
   List<DocDto> get documents => _documents;
@@ -29,7 +30,12 @@ class DocController extends BaseStatus {
   late DocDto? _selectedDoc;
   DocDto? get selectedDoc => _selectedDoc;
 
-  DocController(this._postGeminiUsecase, this._fileUsecase, this._pdfSerivce) {
+  DocController(
+    this._postGeminiUsecase,
+    this._fileUsecase,
+    this._pdfSerivce,
+    this._documentUsecase,
+  ) {
     reset();
   }
 
@@ -164,21 +170,6 @@ class DocController extends BaseStatus {
     } catch (error) {
       print(error);
       setStatus(Status.error);
-    }
-  }
-
-  Future<void> download() async {
-    try {
-      final teste = await _fileUsecase.download(
-        url:
-            "https://firebasestorage.googleapis.com/v0/b/orcaai-hml.firebasestorage.app/o/teste.pdf?alt=media&token=55daec93-2862-4369-b807-47b0e8218660",
-      );
-
-      print(teste);
-
-      notifyListeners();
-    } catch (error) {
-      print(error);
     }
   }
 

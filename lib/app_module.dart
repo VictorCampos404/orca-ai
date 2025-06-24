@@ -26,14 +26,17 @@ class AppModule extends Module {
     //Usecases
     i.addLazySingleton<PostGeminiUsecase>(PostGeminiImpUsecase.new);
     i.addLazySingleton<FileUsecase>(FileImpUsecase.new);
+    i.addLazySingleton<DocumentUsecase>(DocumentImpUsecase.new);
 
     //Repositories
     i.addLazySingleton<PostGeminiRepository>(PostGeminiImpRepository.new);
     i.addLazySingleton<FileRepository>(FileImpRepository.new);
+    i.addLazySingleton<DocumentRepository>(DocumentImpRepository.new);
 
     //Datasources
     i.addLazySingleton<PostGeminiDatasource>(PostGeminiImpDatasource.new);
     i.addLazySingleton<FileDatasource>(FileImpDatasource.new);
+    i.addLazySingleton<DocumentDatasource>(DocumentImpDatasource.new);
 
     //Controllers
     i.addLazySingleton(SystemController.new);

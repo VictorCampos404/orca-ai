@@ -1,6 +1,7 @@
 import 'package:orca_ai/data/data.dart';
 
 class DocDto {
+  String? id;
   String? title;
   String? ac;
   String? description;
@@ -9,6 +10,7 @@ class DocDto {
   FileDto? file;
 
   DocDto({
+    this.id,
     this.title,
     this.ac,
     this.description,
@@ -30,6 +32,7 @@ class DocDto {
 
   factory DocDto.fromMap(Map<String, dynamic> map) {
     return DocDto(
+      id: map['id'],
       title: map['title'],
       ac: map['ac'],
       description: map['description'],
