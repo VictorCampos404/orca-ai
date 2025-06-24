@@ -1,3 +1,4 @@
+import 'package:orca_ai/core/utils/number_in_words.dart';
 import 'package:orca_ai/data/data.dart';
 
 class DocDto {
@@ -67,8 +68,7 @@ class DocDto {
 
     if (n == null) return null;
 
-    // return extenso(n).capitalizar();
-    return '';
+    return NumberInWords().write(n);
   }
 
   bool get havePreview {
