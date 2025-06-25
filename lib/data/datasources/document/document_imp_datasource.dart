@@ -1,3 +1,4 @@
+import 'package:orca_ai/core/utils/extensions.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:orca_ai/domain/domain.dart';
@@ -27,7 +28,7 @@ class DocumentImpDatasource implements DocumentDatasource {
     );
 
     final file = await _fileUsecase.upload(
-      path: 'teste.pdf',
+      path: _getStoragePath(),
       contentType: 'application/pdf',
       file: result!,
     );
@@ -97,6 +98,14 @@ class DocumentImpDatasource implements DocumentDatasource {
           .collection("user")
           .doc(_firebaseAuthService.user?.uid)
           .collection('documents');
+    }
+
+    throw Exception("O usuário não esta logado");
+  }
+
+  String _getStoragePath() {
+    if (_firebaseAuthService.isLogged) {
+      return "${_firebaseAuthService.user?.uid}/Orçamento-${DateTime.now().toFileName}.pdf";
     }
 
     throw Exception("O usuário não esta logado");

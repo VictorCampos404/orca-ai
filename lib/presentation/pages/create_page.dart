@@ -159,10 +159,9 @@ class _CreatePageState extends State<CreatePage> {
                                   userController.userData ??
                                       UserDto(name: "Victor", phone: "Teste"),
                                 );
-                                AppRouter.goToPreviewPage();
                               }
 
-                              // AppRouter.goToPreviewPage(popAndPush: true);
+                              AppRouter.goToPreviewPage(popAndPush: true);
                             },
                           ),
                         )

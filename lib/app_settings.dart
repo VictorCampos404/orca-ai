@@ -26,6 +26,6 @@ class AppSettings {
     await Modular.get<RemoteConfigService>().init();
     await Modular.get<ApiConfig>().init();
 
-    Modular.setInitialRoute(Routes.dashboardPage);
+    Modular.setInitialRoute('Routes.dashboardPage');
   }
 }

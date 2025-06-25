@@ -37,7 +37,7 @@ class AppRouter {
   }
 
   static goToPreviewPage({bool popAndPush = false}) async {
-    if (popAndPush) {
+    if (popAndPush && Modular.routerDelegate.canPop()) {
       return Modular.to.popAndPushNamed(Routes.previewPage);
     }
 

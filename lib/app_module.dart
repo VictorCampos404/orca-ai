@@ -2,7 +2,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:orca_ai/core/clients/gemini_client.dart';
 import 'package:orca_ai/core/configs/api_config.dart';
 import 'package:orca_ai/core/constants/routes.dart';
-import 'package:orca_ai/core/utils/auth_guard.dart';
+import 'package:orca_ai/core/guards/auth_guard.dart';
+import 'package:orca_ai/core/guards/argument_guard.dart';
 import 'package:orca_ai/presentation/controller/doc_controller.dart';
 import 'package:orca_ai/presentation/controller/user_controller.dart';
 import 'package:orca_ai/presentation/controller/user_session_controller.dart';
@@ -10,6 +11,7 @@ import 'package:orca_ai/presentation/pages/create_account_page.dart';
 import 'package:orca_ai/presentation/pages/create_page.dart';
 import 'package:orca_ai/presentation/pages/landing_page.dart';
 import 'package:orca_ai/presentation/pages/login_page.dart';
+import 'package:orca_ai/presentation/pages/not_found_page.dart';
 import 'package:orca_ai/presentation/pages/preview_page.dart';
 import 'package:orca_ai/services/firebase_auth_service.dart';
 import 'package:orca_ai/services/firebase_storage_service.dart';
@@ -78,12 +80,18 @@ class AppModule extends Module {
             prompt: r.args.data?['prompt'],
             doc: r.args.data?['doc'],
           ),
+      guards: [
+        AuthGuard(),
+        ArgumentGuard(key: 'editMode', redirectTo: Routes.dashboardPage),
+      ],
     );
     r.child(Routes.previewPage, child: (ctx) => const PreviewPage());
     // r.child(Routes.homePage, child: (ctx) => const HomePage());
 
     // r.child(Routes.previewPage, child: (ctx) => const PreviewPage());
     // r.child(Routes.listenPage, child: (ctx) => const ListenPage());
+
+    r.wildcard(child: (_) => const NotFoundPage());
 
     super.routes(r);
   }

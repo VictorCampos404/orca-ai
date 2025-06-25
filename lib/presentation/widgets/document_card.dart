@@ -5,6 +5,7 @@ import 'package:orca_ai/core/constants/app_text_styles.dart';
 import 'package:orca_ai/core/constants/custom_icons.dart';
 import 'package:orca_ai/core/constants/spaces.dart';
 import 'package:orca_ai/core/utils/app_router.dart';
+import 'package:orca_ai/core/utils/extensions.dart';
 import 'package:orca_ai/core/utils/pop_up.dart';
 import 'package:orca_ai/data/data.dart';
 import 'package:orca_ai/presentation/controller/doc_controller.dart';
@@ -83,15 +84,20 @@ class DocumentCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                docData.file?.name ?? '',
+                                docData.title ?? '',
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.itemTitle,
                               ),
                               Text(
-                                'Tamanho: ${((docData.file?.bytes?.length ?? 0) / 1024).toStringAsFixed(2)} KB',
+                                docData.createdAt?.toBrazilDateTime ?? '',
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.itemSubTitle,
                               ),
+                              // Text(
+                              //   'Tamanho: ${((docData.file?.bytes?.length ?? 0) / 1024).toStringAsFixed(2)} KB',
+                              //   overflow: TextOverflow.ellipsis,
+                              //   style: AppTextStyles.itemSubTitle,
+                              // ),
                             ],
                           ),
                         ),
